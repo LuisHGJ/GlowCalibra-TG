@@ -1,0 +1,257 @@
+:root {
+  --background: #FCFBFC;
+  --foreground: #171717;
+  --primary: #01a501;
+  --primary-hover: #00d000;
+  --border: #ccc;
+  --card-bg: #fff;
+  --overlay-bg: rgba(0,0,0,0.7);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.titleBox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0 1rem 1rem;
+}
+
+.logoImg {
+  width: 80px;
+  height: auto;
+}
+
+h1.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.uploadFotoForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.inputForm {
+  display: none;
+}
+
+.labelForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  height: 300px;
+  border: 2px dashed var(--border);
+  border-radius: 15px;
+  background-color: rgba(217,217,217,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.labelForm:hover {
+  background-color: rgba(114, 114, 114, 0.516);
+}
+
+.labelForm.hasImage {
+  cursor: default;
+  border: none;
+  padding: 5px;
+  flex-direction: column;
+}
+
+.PreviewBox {
+  width: 320px;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imgPreview {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.PreviewBox:hover .imgPreview {
+  opacity: 0.95;
+  transform: scale(1.03);
+}
+
+.previewTitle {
+  cursor: pointer;
+}
+
+.btEnviar {
+  background-color: var(--primary);
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 40px;
+  margin: 10px;
+  margin-bottom: 30px;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btEnviar:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+.largeViewModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;  
+  height: 100vh; 
+  background-color: var(--overlay-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  position: relative;
+  width: 60%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  padding: 1rem;
+  overflow: hidden;    
+}
+
+.modalContent button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+  color: var(--foreground);
+}
+
+.largeImage {
+  max-width: 100%;      
+  max-height: 100%;      
+  object-fit: contain;   
+  border-radius: 10px;
+}
+
+.resultadosCard {
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.resultadosCard h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.resultadosGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.imgBox img {
+  border-radius: 10px;
+  max-width: 200px;
+  height: auto;
+  cursor: pointer;
+}
+
+.buttonDownload {
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 25px;
+  border: 2px solid var(--primary);
+  background-color: transparent;
+  color: var(--primary);
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.buttonDownload:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Remove Next.js dev overlay button */
+#__next-build-watcher,
+[data-nextjs-dialog-overlay],
+nextjs-portal,
+button[aria-label*="Open"],
+button[aria-label*="Next"],
+iframe[style*="position: fixed"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.btEnviar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loadingBar {
+  width: 100%;
+  max-width: 350px;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.loadingBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #01a501, #00d000);
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 100%;
+  }
+}
