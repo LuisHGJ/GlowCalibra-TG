@@ -13,7 +13,7 @@ from ..src.processing.morphology import closing
 from ..src.post_processing.count_drops import count_drops
 from ..src.post_processing.find_proportion import find_proportion  
 
-DIAMETER_CM = 4.6
+DIAMETER_CM = 5
 
 def pipeline(image_path, output_dir):
     os.makedirs(output_dir, exist_ok=True)
