@@ -38,16 +38,17 @@ def pipeline(image_path, output_dir):
     
     margin = 20
     center, radius = find_center(mask, margin)
+    effective_radius = radius - margin 
 
-    proportion = find_proportion(radius_cm=(DIAMETER_CM / 2), radius_px=radius)
+    proportion = find_proportion(radius_cm=(DIAMETER_CM / 2), radius_px=effective_radius)
 
-    image = apply_circular_roi(image, radius, center, margin)
+    image = apply_circular_roi(image, effective_radius, center, margin=0) 
     save_image(image, os.path.join(output_dir, "final_mask.jpg"))
 
     image = convertToHSV(image)
     hsvMask = createHSVMask(image, [90, 50, 50], [160, 255, 255])
     image = applyMask(image, hsvMask)
-    
+
     image = grayScale(image)
     image = thresholdOtsu(image)
     save_image(image, os.path.join(output_dir, "final_threshold.jpg"))
@@ -55,20 +56,23 @@ def pipeline(image_path, output_dir):
     image = closing(image)
     save_image(image, os.path.join(output_dir, "final_image.jpg"))
 
+    circMask = np.zeros(image.shape[:2], dtype=np.uint8)
+    cv2.circle(circMask,
+               (int(round(center[0])), int(round(center[1]))),
+               int(round(effective_radius)), 255, cv2.FILLED)
+    image = cv2.bitwise_and(image, circMask)
+
     mask, vis, data = count_drops(image, proportion)
     save_image(vis, os.path.join(output_dir, "vis.jpg"))
     export_csv(os.path.join(output_dir, "resultados.csv"), data)
-    
-    radius_cm = radius * proportion  
+
+    radius_cm = DIAMETER_CM / 2  
     area_total = np.pi * (radius_cm ** 2)
     num_drops = len(data)
     area_gotas_total = sum(d["Area"] for d in data)
-    
-    densidade = num_drops / area_total  
-    cobertura = (area_gotas_total / area_total) * 100  # %
 
-    densidade = round(densidade, 2)
-    cobertura = round(cobertura, 2)
+    densidade = round(num_drops / area_total, 2)
+    cobertura = round((area_gotas_total / area_total) * 100, 2)
 
     print(f"\n--- Resultados ---")
     print(f"Total de gotas: {num_drops}")
@@ -76,7 +80,7 @@ def pipeline(image_path, output_dir):
     print(f"Cobertura: {cobertura:.2f}%")
 
     resumo_path = os.path.join(output_dir, "resumo.csv")
-    with open(resumo_path, "w", newline="") as f:
+    with open(resumo_path, "w", newline="", encoding="utf-8") as f:
         import csv
         writer = csv.writer(f)
         writer.writerow(["Total gotas", "Densidade (gotas/cm²)", "Cobertura (%)"])
